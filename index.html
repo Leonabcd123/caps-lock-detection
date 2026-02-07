@@ -28,9 +28,10 @@
         logs = document.getElementById("logs");
     })
 
-    function updateIndicator() {
+    function updateIndicator(event) {
         console.log("capslock is ", finalState ? "on" : "off");
         logs.innerText += `\ncapslock is ${finalState ? "on" : "off"}`;
+        logs.innerText += "\n" + JSON.stringify({ capsLock: event.getModifierState("CapsLock") });
 
         if (finalState) {
             document.getElementById('header').classList = ['capslock'];
@@ -64,7 +65,7 @@
             finalState = isCapsLockOn(event);
         }
 
-        updateIndicator();
+        updateIndicator(event);
         document.getElementById('text').append(event.key + " ");
     });
 
@@ -75,7 +76,7 @@
         if (isMacOs) {
             if (event.key === "CapsLock") {
                 finalState = true;
-                updateIndicator();
+                updateIndicator(event);
             }
         } else if (isLinux) {
             /* Linux sends the correct state before the toggle only on keydown, so we invert the modifier state */
