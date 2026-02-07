@@ -52,7 +52,9 @@
             if (event.key === "CapsLock") {
                 finalState = false;
             } else {
-                finalState = isCapsLockOn(event);
+                if (finalState === null){
+                    finalState = isCapsLockOn(event);
+                }
             }
         }
         else if (isWindows) {
