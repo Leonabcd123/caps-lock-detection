@@ -30,6 +30,14 @@
     let previousCapsState = false;
     let capsState = false;
     const os = getCurrentOs();
+
+    addEventListener("DOMContentLoaded", () => {
+        const pre = document.createElement("pre");
+        pre.innerText = `os: ${os}\nplatform: ${navigator.platform}\nuserAgent: ${navigator.userAgent}\n`;
+        document.body.append(pre);
+        logs = document.getElementById("logs");
+    })
+    
     let onCapsChangeCallback;
     function shouldCallCallback() {
         let callCallback = previousCapsState !== capsState;
