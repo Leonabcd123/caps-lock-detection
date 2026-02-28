@@ -41,7 +41,7 @@
     function getCapsLockModifierState(event) {
         return event.getModifierState("CapsLock");
     }
-    document.addEventListener("mouseenter", (event) => {
+    document.addEventListener("mousemove", (event) => {
         capsState = getCapsLockModifierState(event);
         callCallbackIfNeeded();
     });
