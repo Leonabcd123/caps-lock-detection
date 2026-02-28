@@ -11,24 +11,84 @@
     }
 </style>
 <script>
+    function isPlatform(searchTerm) {
+        const platform = navigator.platform;
+        return platform.includes(searchTerm);
+    }
+    function getCurrentOs() {
+        if (isPlatform("Mac")) {
+            return "Mac";
+        }
+        if (isPlatform("Linux")) {
+            return "Linux";
+        }
+        if (isPlatform("Windows")) {
+            return "Windows";
+        }
+        return "Unknown";
+    }
+    let previousCapsState = false;
+    let capsState = false;
+    const os = getCurrentOs();
+    let onCapsChangeCallback;
+    function shouldCallCallback() {
+        let callCallback = previousCapsState !== capsState;
+        previousCapsState = capsState;
+        return callCallback;
+    }
+    function getCapsLockModifierState(event) {
+        return event.getModifierState("CapsLock");
+    }
+    document.addEventListener("mousedown", (event) => {
+        capsState = getCapsLockModifierState(event);
+        if (shouldCallCallback()) {
+            onCapsChangeCallback(capsState);
+        }
+    });
+    document.addEventListener("keyup", (event) => {
+        if (os === "Mac") {
+            if (event.key === "CapsLock") {
+                capsState = false;
+            }
+            else {
+                if (navigator.maxTouchPoints <= 1) {
+                    capsState = getCapsLockModifierState(event);
+                }
+            }
+        }
+        else if (os === "Windows") {
+            capsState = getCapsLockModifierState(event);
+        }
+        else if (event.key !== "CapsLock") {
+            capsState = getCapsLockModifierState(event);
+        }
+        if (shouldCallCallback()) {
+            onCapsChangeCallback(capsState);
+        }
+    });
+    document.addEventListener("keydown", (event) => {
+        if (os === "Mac") {
+            if (event.key === "CapsLock") {
+                capsState = true;
+                if (shouldCallCallback()) {
+                    onCapsChangeCallback(capsState);
+                }
+            }
+        }
+        else if (os === "Linux") {
+            if (event.key === "CapsLock") {
+                capsState = !getCapsLockModifierState(event);
+            }
+        }
+    });
+    function isCapsLockOn() {
+        return capsState;
+    }
+    function onCapsLockChange(callback) {
+        onCapsChangeCallback = callback;
+    }
 
-    var finalState = null;
-    const isMacOs = navigator.platform.startsWith("Mac") || /Mac/i.test(navigator.userAgent);
-    const isLinux = navigator.platform.startsWith("Linux") || /Linux/i.test(navigator.userAgent);
-    const isWindows = navigator.platform.startsWith("Win") || /Win/i.test(navigator.userAgent);
-
-    let logs;
-
-    addEventListener("DOMContentLoaded", () => {
-        const os = isMacOs ? "macos" : isLinux ? "linux" : isWindows ? "windows" : unknown;
-
-        const pre = document.createElement("pre");
-        pre.innerText = `os: ${os}\nplatform: ${navigator.platform}\nuserAgent: ${navigator.userAgent}\n`;
-        document.body.append(pre);
-        logs = document.getElementById("logs");
-    })
-
-    function updateIndicator() {
+    onCapsLockChange((caps) => {
         console.log("capslock is ", finalState ? "on" : "off");
         logs.innerText += `\ncapslock is ${finalState ? "on" : "off"}`;
 
@@ -36,51 +96,6 @@
             document.getElementById('header').classList = ['capslock'];
         } else {
             document.getElementById('header').classList = [];
-        }
-    }
-
-    function isCapsLockOn() {
-        return event.getModifierState("CapsLock");
-    }
-
-    document.addEventListener("mousedown", (event) => {
-        finalState = isCapsLockOn();
-        updateIndicator();
-    });
-
-
-    document.addEventListener("keyup", event => {
-        console.log({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
-        logs.innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
-        /* macOs sends only keyDown when enabling CapsLock and only keyUp when disabling. */
-        if (isMacOs) {
-            if (event.key === "CapsLock") {
-                finalState = false;
-            }
-        }
-        else if (isWindows) {
-            /* Windows always sends the correct state on keyup */
-            finalState = isCapsLockOn(event);
-        } else if (event.key !== "CapsLock") {
-            finalState = isCapsLockOn(event);
-        }
-
-        updateIndicator();
-        document.getElementById('text').append(event.key + " ");
-    });
-
-    document.addEventListener("keydown", event => {
-        console.log({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
-        logs.innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
-        /* macOs sends only keyDown when enabling CapsLock and only keyUp when disabling. */
-        if (isMacOs) {
-            finalState = isCapsLockOn(event);
-            updateIndicator();
-        } else if (isLinux) {
-            /* Linux sends the correct state before the toggle only on keydown, so we invert the modifier state */
-            if (event.key === "CapsLock") {
-                finalState = !isCapsLockOn(event);
-            }
         }
     })
 
