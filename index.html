@@ -43,6 +43,11 @@
         return event.getModifierState("CapsLock");
     }
 
+    document.addEventListener("mousedown", (event) => {
+        finalState = isCapsLockOn();
+        updateIndicator();
+    });
+
 
     document.addEventListener("keyup", event => {
         console.log({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
