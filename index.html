@@ -31,7 +31,7 @@
     let capsState = false;
     const os = getCurrentOs();
     let onCapsChangeCallback;
-    const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
+    const mouseEventsToUpdateOn = ["mousedown", "mousemove"];
     function callCallbackIfNeeded() {
         const callCallback = previousCapsState !== capsState;
         previousCapsState = capsState;
