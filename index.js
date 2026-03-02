@@ -23,9 +23,7 @@ function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
     if (callCallback) {
-        console.warn("SUP");
-        console.warn(onCapsChangeCallback);
-        onCapsChangeCallback(capsState);
+        onCapsChangeCallback === null || onCapsChangeCallback === void 0 ? void 0 : onCapsChangeCallback(capsState);
     }
 }
 function getCapsLockModifierState(event) {
