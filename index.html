@@ -11,9 +11,9 @@
     }
 </style>
 <script type="module">
-    import { onCapsLockChange, os } from "./index.js";
+    import { onCapsLockChange, getCurrentOs } from "./index.js";
 
-    logs.innerText += "\nOS: " + os;
+    logs.innerText += "\nOS: " + getCurrentOs();
     logs.innerText += "\nUser Agent: " + navigator.userAgent;
     logs.innerText += "\nUser Agent Data Platform: " + navigator.userAgentData?.platform;
     logs.innerText += "\nPlatform: " + navigator.platform;
