@@ -1,14 +1,15 @@
 function isPlatform(searchTerm) {
-    return navigator.userAgentData?.platform === searchTerm || navigator.platform.includes(searchTerm);
+    var _a, _b;
+    return ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) !== null && _b !== void 0 ? _b : navigator.platform).toLowerCase() === searchTerm;
 }
 function getCurrentOs() {
-    if (isPlatform("Mac")) {
+    if (isPlatform("mac")) {
         return "Mac";
     }
-    if (isPlatform("Linux")) {
+    if (isPlatform("linux")) {
         return "Linux";
     }
-    if (isPlatform("Win")) {
+    if (isPlatform("win")) {
         return "Windows";
     }
     return "Unknown";
