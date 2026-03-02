@@ -11,9 +11,19 @@
     }
 </style>
 <script type="module">
-    import { isCapsLockOn } from "./index.js";
+    import { onCapsLockChange } from "./index.js";
+    
+    onCapsLockChange((caps) => {
+        console.log("capslock is ", caps ? "on" : "off");
+        logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
 
-    isCapsLockOn();
+        if (caps) {
+            document.getElementById('header').classList = ['capslock'];
+        } else {
+            document.getElementById('header').classList = [];
+        }
+    })
+
 </script>
 
 <body>
