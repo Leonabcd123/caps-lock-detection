@@ -11,8 +11,10 @@
     }
 </style>
 <script type="module">
-    import { onCapsLockChange } from "./index.js";
+    import { onCapsLockChange, getCurrentOs } from "./index.js";
 
+    logs.innerText += `\nOS: ${getCurrentOs()}`;
+    
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
         logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
