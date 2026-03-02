@@ -1,8 +1,8 @@
 function isPlatform(searchTerm) {
     var _a, _b;
-    return ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) !== null && _b !== void 0 ? _b : navigator.platform).toLowerCase() === searchTerm;
+    return ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) !== null && _b !== void 0 ? _b : navigator.platform).toLowerCase().startsWith(searchTerm);
 }
-export function getCurrentOs() {
+function getCurrentOs() {
     if (isPlatform("mac")) {
         return "Mac";
     }
@@ -16,7 +16,7 @@ export function getCurrentOs() {
 }
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 function callCallbackIfNeeded() {
