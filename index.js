@@ -2,7 +2,7 @@ function isPlatform(searchTerm) {
     var _a;
     return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(searchTerm);
 }
-export function getCurrentOs() {
+function getCurrentOs() {
     if (isPlatform("mac")) {
         return "Mac";
     }
@@ -23,7 +23,7 @@ function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
     if (callCallback) {
-        onCapsChangeCallback(capsState);
+        onCapsChangeCallback === null || onCapsChangeCallback === void 0 ? void 0 : onCapsChangeCallback(capsState);
     }
 }
 function getCapsLockModifierState(event) {
