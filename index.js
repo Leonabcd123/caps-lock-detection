@@ -2,7 +2,7 @@ function isPlatform(searchTerm) {
     var _a, _b;
     return ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) !== null && _b !== void 0 ? _b : navigator.platform).toLowerCase() === searchTerm;
 }
-function getCurrentOs() {
+export function getCurrentOs() {
     if (isPlatform("mac")) {
         return "Mac";
     }
