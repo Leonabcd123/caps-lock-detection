@@ -23,7 +23,7 @@ function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
     if (callCallback) {
-        onCapsChangeCallback === null || onCapsChangeCallback === void 0 ? void 0 : onCapsChangeCallback(capsState);
+        onCapsChangeCallback(capsState);
     }
 }
 function getCapsLockModifierState(event) {
