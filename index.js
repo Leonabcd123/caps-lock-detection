@@ -1,7 +1,10 @@
 function isPlatform(searchTerm) {
-    return navigator.userAgentData.platform === searchTerm || navigator.platform.includes(searchTerm);
+    return navigator.userAgentData?.platform === searchTerm || navigator.platform.includes(searchTerm);
 }
 function getCurrentOs() {
+    console.warn("User Agent: " + navigator.userAgent);
+    console.warn("User Agent Data: " + navigator.userAgentData);
+    console.warn("Platform: " + navigator.platform);
     if (isPlatform("Mac")) {
         return "Mac";
     }
