@@ -1,6 +1,6 @@
-function isPlatform(searchTerm) {
+function isPlatform(osName) {
     var _a;
-    return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(searchTerm);
+    return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(osName);
 }
 function getCurrentOs() {
     if (isPlatform("mac")) {
@@ -27,12 +27,8 @@ function callCallbackIfNeeded() {
     }
 }
 function getCapsLockModifierState(event) {
-    if ("getModifierState" in event) {
-        return event.getModifierState("CapsLock");
-    }
-    else {
-        return capsState;
-    }
+    var _a, _b;
+    return (_b = (_a = event.getModifierState) === null || _a === void 0 ? void 0 : _a.call(event, "CapsLock")) !== null && _b !== void 0 ? _b : capsState;
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
