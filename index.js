@@ -12,7 +12,7 @@ export function getCurrentOs() {
     if (isPlatform("win")) {
         return "Windows";
     }
-    return "Unknown";
+    return "Really Unknown";
 }
 let previousCapsState = false;
 let capsState = false;
