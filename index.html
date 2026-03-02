@@ -14,7 +14,7 @@
     import { onCapsLockChange } from "./index.js";
 
     logs.innerText += "\nUser Agent: " + navigator.userAgent;
-    logs.innerText += "\nUser Agent Data: " + navigator.userAgentData;
+    logs.innerText += "\nUser Agent Data Platform: " + navigator.userAgentData.platform;
     logs.innerText += "\nPlatform: " + navigator.platform;
 
     onCapsLockChange((caps) => {
