@@ -12,17 +12,7 @@
 </style>
 <script type="module">
     import { onCapsLockChange } from "./index.js";
-    
-    onCapsLockChange((caps) => {
-        console.log("capslock is ", caps ? "on" : "off");
-        logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
 
-        if (caps) {
-            document.getElementById('header').classList = ['capslock'];
-        } else {
-            document.getElementById('header').classList = [];
-        }
-    })
 
 </script>
 
