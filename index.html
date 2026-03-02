@@ -11,12 +11,7 @@
     }
 </style>
 <script type="module">
-    import { onCapsLockChange, getCurrentOs } from "./index.js";
-
-    logs.innerText += "\nOS: " + getCurrentOs();
-    logs.innerText += "\nUser Agent: " + navigator.userAgent;
-    logs.innerText += "\nUser Agent Data Platform: " + navigator.userAgentData?.platform;
-    logs.innerText += "\nPlatform: " + navigator.platform;
+    import { onCapsLockChange } from "./index.js";
 
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
