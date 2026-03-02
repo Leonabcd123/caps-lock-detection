@@ -13,9 +13,9 @@
 <script type="module">
     import { onCapsLockChange } from "./index.js";
 
-    logs.innerText += "User Agent: " + navigator.userAgent;
-    logs.innerText += "User Agent Data: " + navigator.userAgentData;
-    logs.innerText += "Platform: " + navigator.platform;
+    logs.innerText += "\nUser Agent: " + navigator.userAgent;
+    logs.innerText += "\nUser Agent Data: " + navigator.userAgentData;
+    logs.innerText += "\nPlatform: " + navigator.platform;
 
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
