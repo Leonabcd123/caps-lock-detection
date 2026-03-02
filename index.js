@@ -1,6 +1,5 @@
 function isPlatform(searchTerm) {
-    const platform = navigator.platform;
-    return platform.includes(searchTerm);
+    return navigator.userAgentData.platform === searchTerm || navigator.platform.includes(searchTerm);
 }
 function getCurrentOs() {
     if (isPlatform("Mac")) {
