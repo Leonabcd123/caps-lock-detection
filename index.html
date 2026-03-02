@@ -13,6 +13,10 @@
 <script type="module">
     import { onCapsLockChange } from "./index.js";
 
+    console.warn("User Agent: " + navigator.userAgent);
+    console.warn("User Agent Data: " + navigator.userAgentData);
+    console.warn("Platform: " + navigator.platform);
+
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
         logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
