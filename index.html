@@ -22,6 +22,8 @@
     logs.innerText += `\nGPU: ${navigator.gpu}`;
     if ("virtualKeyboard" in navigator) {
       navigator.virtualKeyboard.overlaysContent = true;
+
+      logs.innerText += "\nVirtual keyboard enabled";
     
       navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
         const { x, y, width, height } = event.target.boundingRect;
