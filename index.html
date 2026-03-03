@@ -14,6 +14,8 @@
     import { onCapsLockChange, os } from "./index.js";
 
     logs.innerText += `\nOS: ${os}`;
+    logs.innerText += `\nUser Agent: ${navigator.userAgent}`;
+    logs.innerText += `\nPlatform: ${navigator.platform}`;
     
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
