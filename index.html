@@ -20,6 +20,7 @@
     logs.innerText += `\nPlatform (user agent): ${navigator.userAgentData?.platform}`;
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
     logs.innerText += `\nGPU: ${navigator.gpu}`;
+    logs.innerText += `\nVirtual Keyboard: ${navigator.virtualKeyboard}`;
     if ("virtualKeyboard" in navigator) {
       navigator.virtualKeyboard.overlaysContent = true;
 
