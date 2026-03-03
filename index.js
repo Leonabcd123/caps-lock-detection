@@ -1,7 +1,6 @@
 function isPlatform(osName) {
     var _a;
     return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(osName) || new RegExp(osName, "i").test(navigator.userAgent);
-    ;
 }
 function getCurrentOs() {
     if (isPlatform("mac")) {
@@ -17,7 +16,7 @@ function getCurrentOs() {
 }
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 function callCallbackIfNeeded() {
