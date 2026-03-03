@@ -1,6 +1,6 @@
 function isPlatform(osName) {
     var _a;
-    return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(osName);
+    return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(osName) || new RegExp(osName, "i").test(navigator.userAgent);
 }
 function getCurrentOs() {
     if (isPlatform("mac")) {
@@ -16,7 +16,7 @@ function getCurrentOs() {
 }
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 function callCallbackIfNeeded() {
@@ -39,13 +39,12 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
-    var _a, _b;
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
         }
         else {
-            if ((_b = !((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile)) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1)) {
+            if (navigator.maxTouchPoints <= 1) {
                 capsState = getCapsLockModifierState(event);
             }
         }
