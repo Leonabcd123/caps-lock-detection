@@ -16,7 +16,7 @@ function getCurrentOs() {
 }
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 function callCallbackIfNeeded() {
@@ -39,12 +39,14 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    var _a;
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
         }
         else {
-            if (navigator.maxTouchPoints <= 1) {
+            const isMobile = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile;
+            if (isMobile !== undefined ? !isMobile : navigator.maxTouchPoints <= 1) {
                 capsState = getCapsLockModifierState(event);
             }
         }
