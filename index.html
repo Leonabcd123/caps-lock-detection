@@ -34,7 +34,17 @@
         } else {
             document.getElementById('header').classList = [];
         }
-    })
+    });
+
+    navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
+        logs.innerText += "\nVirtual Keyboard";
+        const { x, y, width, height } = navigator.virtualKeyboard.boundingRect;
+
+        logs.innerText += `\nX: ${x}`;
+        logs.innerText += `\nY: ${y}`;
+        logs.innerText += `\nWidth: ${width}`;
+        logs.innerText += `\nHeight: ${height}`;
+    });
 
 </script>
 
