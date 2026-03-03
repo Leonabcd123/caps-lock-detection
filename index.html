@@ -20,6 +20,9 @@
     logs.innerText += `\nPlatform (user agent): ${navigator.userAgentData?.platform}`;
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
     logs.innerText += `\nGPU: ${navigator.gpu}`;
+    navigator.getGamepads().forEach((gamePad) => {
+      logs.innerText += `\nGamePad ID: ${gamePad.id}`;
+    });
     logs.innerText += `\nNothing8`;
     
     onCapsLockChange((caps) => {
