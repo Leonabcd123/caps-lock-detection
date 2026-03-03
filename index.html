@@ -13,8 +13,7 @@
 <script type="module">
     import { onCapsLockChange, os } from "./index.js";
 
-    var _a, _b;
-    const isMobile = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile;
+    const isMobile = navigator.userAgentData;
     logs.innerText += `\nOS: ${os}`;
     logs.innerText += `\nUser Agent: ${navigator.userAgent}`;
     logs.innerText += `\nPlatform: ${navigator.platform}`;
