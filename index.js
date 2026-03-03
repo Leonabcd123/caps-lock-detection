@@ -39,12 +39,13 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    var _a, _b;
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
         }
         else {
-            if (navigator.maxTouchPoints <= 1) {
+            if ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1)) {
                 capsState = getCapsLockModifierState(event);
             }
         }
