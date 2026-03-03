@@ -20,6 +20,17 @@
     logs.innerText += `\nPlatform (user agent): ${navigator.userAgentData?.platform}`;
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
     logs.innerText += `\nGPU: ${navigator.gpu}`;
+    if ("virtualKeyboard" in navigator) {
+      navigator.virtualKeyboard.overlaysContent = true;
+    
+      navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
+        const { x, y, width, height } = event.target.boundingRect;
+
+        if (width === 0) {
+            logs.innerText += "\nVirtualy Keyboard is closed";
+        }
+      });
+    }
     logs.innerText += `\nNothing10`;
     
     onCapsLockChange((caps) => {
