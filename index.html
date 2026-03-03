@@ -18,8 +18,8 @@
     logs.innerText += `\nOS: ${os}`;
     logs.innerText += `\nUser Agent: ${navigator.userAgent}`;
     logs.innerText += `\nPlatform: ${navigator.platform}`;
-    logs.innerText += `\nMobile: ${isMobile !== undefined ? isMobile : navigator.maxTouchPoints > 1}`;
-    logs.innerText += `\nNothing4`;
+    logs.innerText += `\nMobile: ${isMobile}`;
+    logs.innerText += `\nNothing5`;
     
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
