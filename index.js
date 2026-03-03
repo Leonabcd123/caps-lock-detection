@@ -45,7 +45,7 @@ document.addEventListener("keyup", (event) => {
             capsState = false;
         }
         else {
-            if ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1)) {
+            if ((_b = !((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile)) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1)) {
                 capsState = getCapsLockModifierState(event);
             }
         }
