@@ -19,7 +19,8 @@
     logs.innerText += `\nMobile: ${navigator.userAgentData?.mobile}`;
     logs.innerText += `\nPlatform (user agent): ${navigator.userAgentData?.platform}`;
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
-    logs.innerText += `\nNothing7`;
+    logs.innerText += `\nGPU: ${navigator.gpu}`;
+    logs.innerText += `\nNothing8`;
     
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
