@@ -15,8 +15,8 @@
 
     logs.innerText += `\nOS: ${os}`;
     var _a, _b;
-    const isMobile = ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1));
-    logs.innerText += `\nMobile: ${isMobile}`;
+    const isMobile = ((_b = !((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile)) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1))
+    logs.innerText += `\nMobile: ${!isMobile}`;
     
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
