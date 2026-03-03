@@ -27,11 +27,13 @@
         const { x, y, width, height } = event.target.boundingRect;
 
         if (width === 0) {
-            logs.innerText += "\nVirtualy Keyboard is closed";
+            logs.innerText += "\nVirtual Keyboard is closed";
+        } else {
+            logs.innerText += "\nVirtual Keyboard is open";
         }
       });
     }
-    logs.innerText += `\nNothing10`;
+    logs.innerText += `\nNothing11`;
     
     onCapsLockChange((caps) => {
         console.log("capslock is ", caps ? "on" : "off");
