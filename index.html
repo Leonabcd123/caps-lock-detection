@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+    #header:after {
+        content: 'off';
+    }
 
+    #header.capslock:after {
+        content: 'on';
+        background: red;
+    }
+</style>
+<script type="module">
+    import { onCapsLockChange, os } from "./index.js";
+
+    logs.innerText += `\nOS: ${os}`;
+    var _a, _b;
+    const isMobile = ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1));
+    logs.innerText += `\nMobile: ${isMobile}`;
+    
+    onCapsLockChange((caps) => {
+        console.log("capslock is ", caps ? "on" : "off");
+        logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
+
+        if (caps) {
+            document.getElementById('header').classList = ['capslock'];
+        } else {
+            document.getElementById('header').classList = [];
+        }
+    })
+
+</script>
+
+<body>
+    <h1 id="header">Caps-Lock is </h1>
+    Type some text or toggle Caps Lock...
+    <div id="text"></div>
+
+    <textarea></textarea><br />
+    <input type="username" autocomplete="current-username"><br />
+    <input type="password" autocomplete="current-password"><br /><br />
+    <h2>Logs</h2>
+    <pre id="logs"></pre>
+</body>
+
+</html>
