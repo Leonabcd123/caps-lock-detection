@@ -1,46 +1,79 @@
-<!DOCTYPE html>
-<html>
-<style type="text/css">
-    #header:after {
-        content: 'off';
+function isPlatform(osName) {
+    var _a;
+    return (((_a = navigator.userAgentData) !== null && _a !== void 0 ? _a : navigator).platform).toLowerCase().startsWith(osName);
+}
+function getCurrentOs() {
+    if (isPlatform("mac")) {
+        return "Mac";
     }
-
-    #header.capslock:after {
-        content: 'on';
-        background: red;
+    if (isPlatform("linux")) {
+        return "Linux";
     }
-</style>
-<script type="module">
-    import { onCapsLockChange, os } from "./index.js";
-
-    logs.innerText += `\nOS: ${os}`;
+    if (isPlatform("win")) {
+        return "Windows";
+    }
+    return "Unknown";
+}
+let previousCapsState = false;
+let capsState = false;
+export const os = getCurrentOs();
+let onCapsChangeCallback;
+const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
+function callCallbackIfNeeded() {
+    const callCallback = previousCapsState !== capsState;
+    previousCapsState = capsState;
+    if (callCallback) {
+        onCapsChangeCallback === null || onCapsChangeCallback === void 0 ? void 0 : onCapsChangeCallback(capsState);
+    }
+}
+function getCapsLockModifierState(event) {
     var _a, _b;
-    const isMobile = ((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1));
-    logs.innerText += `\nMobile: ${isMobile}`;
-    
-    onCapsLockChange((caps) => {
-        console.log("capslock is ", caps ? "on" : "off");
-        logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
-
-        if (caps) {
-            document.getElementById('header').classList = ['capslock'];
-        } else {
-            document.getElementById('header').classList = [];
+    return (_b = (_a = event.getModifierState) === null || _a === void 0 ? void 0 : _a.call(event, "CapsLock")) !== null && _b !== void 0 ? _b : capsState;
+}
+mouseEventsToUpdateOn.forEach((eventType) => {
+    document.addEventListener(eventType, (event) => {
+        if (event instanceof MouseEvent) {
+            capsState = getCapsLockModifierState(event);
+            callCallbackIfNeeded();
         }
-    })
-
-</script>
-
-<body>
-    <h1 id="header">Caps-Lock is </h1>
-    Type some text or toggle Caps Lock...
-    <div id="text"></div>
-
-    <textarea></textarea><br />
-    <input type="username" autocomplete="current-username"><br />
-    <input type="password" autocomplete="current-password"><br /><br />
-    <h2>Logs</h2>
-    <pre id="logs"></pre>
-</body>
-
-</html>
+    });
+});
+document.addEventListener("keyup", (event) => {
+    var _a, _b;
+    if (os === "Mac") {
+        if (event.key === "CapsLock") {
+            capsState = false;
+        }
+        else {
+            if ((_b = !((_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile)) !== null && _b !== void 0 ? _b : (navigator.maxTouchPoints <= 1)) {
+                capsState = getCapsLockModifierState(event);
+            }
+        }
+    }
+    else if (os === "Windows") {
+        capsState = getCapsLockModifierState(event);
+    }
+    else if (event.key !== "CapsLock") {
+        capsState = getCapsLockModifierState(event);
+    }
+    callCallbackIfNeeded();
+});
+document.addEventListener("keydown", (event) => {
+    if (os === "Mac") {
+        if (event.key === "CapsLock") {
+            capsState = true;
+            callCallbackIfNeeded();
+        }
+    }
+    else if (os === "Linux") {
+        if (event.key === "CapsLock") {
+            capsState = !getCapsLockModifierState(event);
+        }
+    }
+});
+export function isCapsLockOn() {
+    return capsState;
+}
+export function onCapsLockChange(callback) {
+    onCapsChangeCallback = callback;
+}
