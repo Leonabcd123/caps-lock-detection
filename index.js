@@ -25,7 +25,7 @@ function updateSendingCapsLockStateOniPad(event) {
     if (isSendingCapsLockStateOniPad)
         return null;
     const currentCapsState = getCapsLockModifierState(event);
-    isSendingCapsLockStateOniPad || (isSendingCapsLockStateOniPad = currentCapsState);
+    isSendingCapsLockStateOniPad = currentCapsState;
     return currentCapsState;
 }
 function callCallbackIfNeeded() {
@@ -74,8 +74,7 @@ document.addEventListener("keydown", (event) => {
         if (event.key === "CapsLock") {
             capsState = true;
             if (isiPad && !isSendingCapsLockStateOniPad) {
-                const currentCapsState = updateSendingCapsLockStateOniPad(event);
-                document.getElementById("logs").innerText += `\nWHAT`;
+                updateSendingCapsLockStateOniPad(event);
             }
             callCallbackIfNeeded();
         }
