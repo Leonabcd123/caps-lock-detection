@@ -19,6 +19,7 @@ let capsState = false;
 export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
+let isSendingCapsLockStateOnMac = false;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -39,14 +40,15 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
-    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
         }
         else {
-            if (navigator.maxTouchPoints <= 1) {
-                capsState = getCapsLockModifierState(event);
+            const currentCapsState = getCapsLockModifierState(event);
+            isSendingCapsLockStateOnMac || (isSendingCapsLockStateOnMac = currentCapsState);
+            if (isSendingCapsLockStateOnMac) {
+                capsState = currentCapsState;
             }
         }
     }
@@ -59,8 +61,6 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
-    // Test
-    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
