@@ -25,6 +25,7 @@ function updateSendingCapsLockStateOniPad(event) {
     if (isSendingCapsLockStateOniPad)
         return null;
     const currentCapsState = getCapsLockModifierState(event);
+    document.getElementById("logs").innerText += `\nTHIS: ${currentCapsState}`;
     isSendingCapsLockStateOniPad = currentCapsState;
     return currentCapsState;
 }
