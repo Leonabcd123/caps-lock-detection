@@ -19,7 +19,7 @@ let capsState = false;
 export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
-let isSendingCapsLockStateOniPad = navigator.maxTouchPoints <= 1;
+let isSendingCapsLockStateOniPad = os === "Mac" && navigator.maxTouchPoints <= 1;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -34,7 +34,12 @@ function getCapsLockModifierState(event) {
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
-            capsState = getCapsLockModifierState(event);
+            if (os !== "Mac" || isSendingCapsLockStateOniPad) {
+                capsState = getCapsLockModifierState(event);
+            }
+            else {
+                capsState = false;
+            }
             callCallbackIfNeeded();
         }
     });
