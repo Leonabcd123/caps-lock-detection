@@ -21,14 +21,6 @@ let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
 let isSendingCapsLockStateOniPad = !isiPad;
-function updateSendingCapsLockStateOniPad(event) {
-    if (isSendingCapsLockStateOniPad)
-        return null;
-    const currentCapsState = getCapsLockModifierState(event);
-    document.getElementById("logs").innerText += `\nTHIS: ${currentCapsState}`;
-    isSendingCapsLockStateOniPad = currentCapsState;
-    return currentCapsState;
-}
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -56,10 +48,10 @@ document.addEventListener("keyup", (event) => {
             capsState = false;
         }
         else {
-            const currentCapsState = updateSendingCapsLockStateOniPad(event);
+            const currentCapsState = getCapsLockModifierState(event);
+            isSendingCapsLockStateOniPad || (isSendingCapsLockStateOniPad = currentCapsState);
             if (isSendingCapsLockStateOniPad) {
-                document.getElementById("logs").innerText += "\nSHOULDN'T PRINT";
-                capsState = currentCapsState !== null && currentCapsState !== void 0 ? currentCapsState : getCapsLockModifierState(event);
+                capsState = currentCapsState;
             }
         }
     }
@@ -75,10 +67,6 @@ document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
-            if (isiPad && !isSendingCapsLockStateOniPad) {
-                updateSendingCapsLockStateOniPad(event);
-                document.getElementById("logs").innerText += "\nWHAT";
-            }
             callCallbackIfNeeded();
         }
     }
