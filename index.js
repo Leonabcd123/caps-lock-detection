@@ -34,8 +34,9 @@ function getCapsLockModifierState(event) {
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
-            capsState = getCapsLockModifierState(event);
-            document.getElementById("logs").innerText += `\n${capsState}`;
+            if (os !== "Mac" || navigator.maxTouchPoints <= 1) {
+                capsState = getCapsLockModifierState(event);
+            }
             callCallbackIfNeeded();
         }
     });
