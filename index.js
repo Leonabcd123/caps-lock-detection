@@ -16,7 +16,7 @@ function getCurrentOs() {
 }
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 let isSendingCapsLockStateOnMac = false;
@@ -46,7 +46,12 @@ document.addEventListener("keyup", (event) => {
         }
         else {
             const currentCapsState = getCapsLockModifierState(event);
-            isSendingCapsLockStateOnMac || (isSendingCapsLockStateOnMac = currentCapsState);
+            if (navigator.maxTouchPoints > 1) {
+                isSendingCapsLockStateOnMac || (isSendingCapsLockStateOnMac = currentCapsState);
+            }
+            else {
+                isSendingCapsLockStateOnMac = true;
+            }
             if (isSendingCapsLockStateOnMac) {
                 capsState = currentCapsState;
             }
