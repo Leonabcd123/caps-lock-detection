@@ -22,6 +22,8 @@ const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
 let isSendingCapsLockStateOniPad = !isiPad;
 function updateSendingCapsLockStateOniPad(event) {
+    if (isSendingCapsLockStateOniPad)
+        return null;
     const currentCapsState = getCapsLockModifierState(event);
     isSendingCapsLockStateOniPad || (isSendingCapsLockStateOniPad = currentCapsState);
     return currentCapsState;
@@ -55,7 +57,7 @@ document.addEventListener("keyup", (event) => {
         else {
             const currentCapsState = updateSendingCapsLockStateOniPad(event);
             if (isSendingCapsLockStateOniPad) {
-                capsState = currentCapsState;
+                capsState = currentCapsState !== null && currentCapsState !== void 0 ? currentCapsState : getCapsLockModifierState(event);
             }
         }
     }
