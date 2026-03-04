@@ -59,6 +59,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
+    // Test
     document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
     if (os === "Mac") {
         if (event.key === "CapsLock") {
