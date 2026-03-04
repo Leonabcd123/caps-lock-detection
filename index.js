@@ -39,6 +39,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -58,6 +59,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
+    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
