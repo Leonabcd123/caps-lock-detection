@@ -74,7 +74,8 @@ document.addEventListener("keydown", (event) => {
         if (event.key === "CapsLock") {
             capsState = true;
             if (isiPad && !isSendingCapsLockStateOniPad) {
-                updateSendingCapsLockStateOniPad(event);
+                const currentCapsState = updateSendingCapsLockStateOniPad(event);
+                document.getElementById("logs").innerText += `\nWHAT`;
             }
             callCallbackIfNeeded();
         }
