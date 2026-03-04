@@ -42,8 +42,8 @@ mouseEventsToUpdateOn.forEach((eventType) => {
         if (event instanceof MouseEvent) {
             if (!isiPad) {
                 capsState = getCapsLockModifierState(event);
+                callCallbackIfNeeded();
             }
-            callCallbackIfNeeded();
         }
     });
 });
