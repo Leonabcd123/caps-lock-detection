@@ -34,12 +34,8 @@ function getCapsLockModifierState(event) {
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
-            if (os !== "Mac" || isSendingCapsLockStateOniPad) {
-                capsState = getCapsLockModifierState(event);
-            }
-            else {
-                capsState = false;
-            }
+            capsState = getCapsLockModifierState(event);
+            document.getElementById("logs").innerText += `\n${capsState}`;
             callCallbackIfNeeded();
         }
     });
