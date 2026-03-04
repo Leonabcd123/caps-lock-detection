@@ -21,21 +21,6 @@
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
     logs.innerText += `\nGPU: ${navigator.gpu}`;
     logs.innerText += `\nVirtual Keyboard: ${navigator.virtualKeyboard}`;
-    if ("virtualKeyboard" in navigator) {
-      navigator.virtualKeyboard.overlaysContent = true;
-
-      logs.innerText += "\nVirtual keyboard enabled";
-    
-      navigator.virtualKeyboard.addEventListener("geometrychange", (event) => {
-        const { x, y, width, height } = event.target.boundingRect;
-
-        if (width === 0) {
-            logs.innerText += "\nVirtual Keyboard is closed";
-        } else {
-            logs.innerText += "\nVirtual Keyboard is open";
-        }
-      });
-    }
     logs.innerText += `\nNothing11`;
     
     onCapsLockChange((caps) => {
