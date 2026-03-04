@@ -57,6 +57,7 @@ document.addEventListener("keyup", (event) => {
         else {
             const currentCapsState = updateSendingCapsLockStateOniPad(event);
             if (isSendingCapsLockStateOniPad) {
+                document.getElementById("logs").innerText += "\nSHOULDN'T PRINT";
                 capsState = currentCapsState !== null && currentCapsState !== void 0 ? currentCapsState : getCapsLockModifierState(event);
             }
         }
@@ -75,6 +76,7 @@ document.addEventListener("keydown", (event) => {
             capsState = true;
             if (isiPad && !isSendingCapsLockStateOniPad) {
                 updateSendingCapsLockStateOniPad(event);
+                document.getElementById("logs").innerText += "\nWHAT";
             }
             callCallbackIfNeeded();
         }
