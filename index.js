@@ -20,7 +20,7 @@ export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
-let isSendingCapsLockStateOniPad = navigator.maxTouchPoints <= 1;
+let isSendingCapsLockStateOniPad = !isiPad;
 function updateSendingCapsLockStateOniPad(event) {
     const currentCapsState = getCapsLockModifierState(event);
     isSendingCapsLockStateOniPad || (isSendingCapsLockStateOniPad = currentCapsState);
