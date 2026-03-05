@@ -52,7 +52,6 @@ document.addEventListener("keyup", (event) => {
             const currentCapsState = getCapsLockModifierState(event);
             const keypressDuration = Date.now() - startOfLastKeypressMac;
             isUsingExternalKeyboardOniPad || (isUsingExternalKeyboardOniPad = currentCapsState || keypressDuration > 100);
-            document.getElementById("logs").innerText += `\nEXTERNAL KEYBOARD: ${isUsingExternalKeyboardOniPad}`;
             if (isUsingExternalKeyboardOniPad) {
                 capsState = currentCapsState;
             }
@@ -68,10 +67,12 @@ document.addEventListener("keyup", (event) => {
 });
 document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
-        startOfLastKeypressMac = Date.now();
         if (event.key === "CapsLock") {
             capsState = true;
             callCallbackIfNeeded();
+        }
+        else {
+            startOfLastKeypressMac = Date.now();
         }
     }
     else if (os === "Linux") {
