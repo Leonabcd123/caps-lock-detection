@@ -21,6 +21,7 @@ let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
 let isSendingCapsLockStateOniPad = !isiPad;
+let lastKeypressStartTime = 0;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -43,6 +44,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    document.getElementById("logs").innerText += `\nTIME: ${Date.now().getTime()}`;
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -64,6 +66,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
+    lastKeypressStartTime = Date.now().getTime();
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
