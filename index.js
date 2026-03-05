@@ -51,6 +51,7 @@ document.addEventListener("keyup", (event) => {
         else {
             const currentCapsState = getCapsLockModifierState(event);
             const keypressDuration = Date.now() - startOfLastKeypressMac;
+            document.getElementById("logs").innerText += `\nDURATION: ${keypressDuration}`;
             isUsingExternalKeyboardOniPad || (isUsingExternalKeyboardOniPad = currentCapsState || keypressDuration > 100);
             if (isUsingExternalKeyboardOniPad) {
                 capsState = currentCapsState;
