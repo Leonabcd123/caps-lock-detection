@@ -44,7 +44,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
-    document.getElementById("logs").innerText += `\nTIME: ${new Date().getTime()}`;
+    document.getElementById("logs").innerText += `\nTIME: ${new Date().getTime() - lastKeypressStartTime}`;
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
