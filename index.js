@@ -50,8 +50,8 @@ document.addEventListener("keyup", (event) => {
         }
         else {
             const currentCapsState = getCapsLockModifierState(event);
-            isUsingExternalKeyboardOniPad || (isUsingExternalKeyboardOniPad = currentCapsState);
-            isUsingExternalKeyboardOniPad || (isUsingExternalKeyboardOniPad = (Date.now() - startOfLastKeypressMac) > 100);
+            const keypressDuration = Date.now() - startOfLastKeypressMac;
+            isUsingExternalKeyboardOniPad || (isUsingExternalKeyboardOniPad = currentCapsState || keypressDuration > 100);
             if (isUsingExternalKeyboardOniPad) {
                 capsState = currentCapsState;
             }
