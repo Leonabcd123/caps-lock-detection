@@ -40,7 +40,6 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
             if (!isiPad) {
-                printKeys(event);
                 capsState = getCapsLockModifierState(event);
                 callCallbackIfNeeded();
             }
