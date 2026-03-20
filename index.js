@@ -1,3 +1,7 @@
+function printKeys(event) {
+    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: getCapsLockModifierState(event) });
+}
+
 function isPlatform(osName) {
     var _a, _b;
     return osName.test((_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.platform) !== null && _b !== void 0 ? _b : (navigator.oscpu || navigator.userAgent || navigator.platform));
@@ -36,6 +40,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
             if (!isiPad) {
+                printKeys();
                 capsState = getCapsLockModifierState(event);
                 callCallbackIfNeeded();
             }
@@ -43,6 +48,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    printKeys();
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -64,6 +70,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
+    printKeys();
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
