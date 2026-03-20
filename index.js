@@ -40,7 +40,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (event instanceof MouseEvent) {
             if (!isiPad) {
-                printKeys();
+                printKeys(event);
                 capsState = getCapsLockModifierState(event);
                 callCallbackIfNeeded();
             }
@@ -48,7 +48,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
-    printKeys();
+    printKeys(event);
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -70,7 +70,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
-    printKeys();
+    printKeys(event);
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
