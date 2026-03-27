@@ -22,6 +22,7 @@
     logs.innerText += `\nUser Agent: ${navigator.userAgent}`;
     logs.innerText += `\nPlatform: ${navigator.platform}`;
     logs.innerText += `\noscpu: ${navigator.oscpu}`;
+    logs.innerText += `\nAndroid: ${/Android/i.test(navigator.userAgentData?.platform)}`;
     logs.innerText += `\nMobile: ${navigator.userAgentData?.mobile}`;
     logs.innerText += `\nPlatform (user agent): ${navigator.userAgentData?.platform}`;
     logs.innerText += `\nMax Touch Points: ${navigator.maxTouchPoints}`;
