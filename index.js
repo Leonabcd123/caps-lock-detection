@@ -29,6 +29,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
+    printKeys(event);
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -50,6 +51,7 @@ document.addEventListener("keyup", (event) => {
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
+    printKeys(event);
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
