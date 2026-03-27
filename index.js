@@ -1,7 +1,4 @@
-function printKeys(event) {
-    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: getCapsLockModifierState(event) });
-}
-import { getCurrentOs } from "./os-detection";
+import { getCurrentOs } from "./os-detection.js";
 let previousCapsState = false;
 let capsState = false;
 const os = getCurrentOs();
@@ -9,6 +6,11 @@ let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
 let isSendingCapsLockState = !isiPad;
+
+function printKeys(event) {
+    document.getElementById("logs").innerText += "\n" + JSON.stringify({ e: event.type, key: event.key, capsLock: getCapsLockModifierState(event) });
+}
+
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
