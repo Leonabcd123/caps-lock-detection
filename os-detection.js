@@ -22,5 +22,5 @@ export function getCurrentOs() {
     if (isPlatform(/Win/i)) {
         return "Windows";
     }
-    return "Unknown";
+    return /Android/i.test(navigator.userAgentData.platform);
 }
