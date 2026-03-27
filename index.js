@@ -47,7 +47,7 @@ document.addEventListener("keyup", (event) => {
     else if (os === "Windows") {
         capsState = getCapsLockModifierState(event);
     }
-    else if (event.key !== "CapsLock") {
+    else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
         capsState = getCapsLockModifierState(event);
     }
     callCallbackIfNeeded();
