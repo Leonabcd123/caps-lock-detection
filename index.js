@@ -21,9 +21,12 @@ function getCapsLockModifierState(event) {
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
-        if (!isiPad && (!isMobile || !capsState)) {
-            capsState = getCapsLockModifierState(event);
-            callCallbackIfNeeded();
+        if (!isiPad) {
+            const currentState = getCapsLockModifierState(event);
+            if (!isMobile || !currentState) {
+                capsState = currentState;
+                callCallbackIfNeeded();
+            }
         }
     });
 });
