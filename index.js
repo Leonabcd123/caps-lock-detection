@@ -5,8 +5,7 @@ export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isMobile = navigator.maxTouchPoints > 1;
-const isiPad = os === "Mac" && isMobile;
-let isSendingCapsLockState = !isiPad;
+let isUsingExternalKeyboard = !isMobile;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -20,10 +19,8 @@ function getCapsLockModifierState(event) {
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
-        if (!isMobile) {
-            capsState = getCapsLockModifierState(event);
-            callCallbackIfNeeded();
-        }
+        capsState = getCapsLockModifierState(event);
+        callCallbackIfNeeded();
     });
 });
 document.addEventListener("keyup", (event) => {
@@ -33,9 +30,9 @@ document.addEventListener("keyup", (event) => {
         }
         else {
             const currentCapsState = getCapsLockModifierState(event);
-            if (isSendingCapsLockState || currentCapsState) {
+            if (isUsingExternalKeyboard || currentCapsState) {
                 capsState = currentCapsState;
-                isSendingCapsLockState = true;
+                isUsingExternalKeyboard = true;
             }
         }
     }
@@ -57,6 +54,7 @@ document.addEventListener("keydown", (event) => {
     else if (os === "Linux") {
         if (event.key === "CapsLock") {
             capsState = !getCapsLockModifierState(event);
+            isUsingExternalKeyboard = true;
         }
     }
 });
