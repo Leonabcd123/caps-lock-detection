@@ -1,7 +1,7 @@
 import { getCurrentOs } from "./os-detection.js";
 let previousCapsState = false;
 let capsState = false;
-const os = getCurrentOs();
+export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isMobile = navigator.maxTouchPoints > 1;
