@@ -47,19 +47,19 @@ document.addEventListener("keyup", (event) => {
     }
     callCallbackIfNeeded();
 });
-// document.addEventListener("keydown", (event) => {
-//     if (os === "Mac") {
-//         if (event.key === "CapsLock") {
-//             capsState = true;
-//             callCallbackIfNeeded();
-//         }
-//     }
-//     else if (os === "Linux") {
-//         if (event.key === "CapsLock") {
-//             capsState = !getCapsLockModifierState(event);
-//         }
-//     }
-// });
+document.addEventListener("keydown", (event) => {
+    if (os === "Mac") {
+        if (event.key === "CapsLock") {
+            capsState = true;
+            callCallbackIfNeeded();
+        }
+    }
+    else if (os === "Linux") {
+        if (event.key === "CapsLock") {
+            capsState = !getCapsLockModifierState(event);
+        }
+    }
+});
 export function isCapsLockOn() {
     return capsState;
 }
