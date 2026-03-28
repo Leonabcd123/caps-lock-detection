@@ -19,8 +19,10 @@ function getCapsLockModifierState(event) {
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
-        capsState = getCapsLockModifierState(event);
-        callCallbackIfNeeded();
+        if (!isUsingExternalKeyboard) {
+            capsState = getCapsLockModifierState(event);
+            callCallbackIfNeeded();
+        }
     });
 });
 document.addEventListener("keyup", (event) => {
