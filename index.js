@@ -26,40 +26,40 @@ mouseEventsToUpdateOn.forEach((eventType) => {
         }
     });
 });
-// document.addEventListener("keyup", (event) => {
-//     if (os === "Mac") {
-//         if (event.key === "CapsLock") {
-//             capsState = false;
-//         }
-//         else {
-//             const currentCapsState = getCapsLockModifierState(event);
-//             if (isSendingCapsLockState || currentCapsState) {
-//                 capsState = currentCapsState;
-//                 isSendingCapsLockState = true;
-//             }
-//         }
-//     }
-//     else if (os === "Windows") {
-//         capsState = getCapsLockModifierState(event);
-//     }
-//     else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
-//         capsState = getCapsLockModifierState(event);
-//     }
-//     callCallbackIfNeeded();
-// });
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keyup", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
-            capsState = true;
-            callCallbackIfNeeded();
+            capsState = false;
+        }
+        else {
+            const currentCapsState = getCapsLockModifierState(event);
+            if (isSendingCapsLockState || currentCapsState) {
+                capsState = currentCapsState;
+                isSendingCapsLockState = true;
+            }
         }
     }
-    else if (os === "Linux") {
-        if (event.key === "CapsLock") {
-            capsState = !getCapsLockModifierState(event);
-        }
+    else if (os === "Windows") {
+        capsState = getCapsLockModifierState(event);
     }
+    else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
+        capsState = getCapsLockModifierState(event);
+    }
+    callCallbackIfNeeded();
 });
+// document.addEventListener("keydown", (event) => {
+//     if (os === "Mac") {
+//         if (event.key === "CapsLock") {
+//             capsState = true;
+//             callCallbackIfNeeded();
+//         }
+//     }
+//     else if (os === "Linux") {
+//         if (event.key === "CapsLock") {
+//             capsState = !getCapsLockModifierState(event);
+//         }
+//     }
+// });
 export function isCapsLockOn() {
     return capsState;
 }
