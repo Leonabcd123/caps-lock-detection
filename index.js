@@ -1,10 +1,11 @@
 import { getCurrentOs } from "./os-detection.js";
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
-const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
+const isMobile = navigator.maxTouchPoints > 1;
+const isiPad = os === "Mac" && isMobile;
 let isSendingCapsLockState = !isiPad;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
@@ -19,8 +20,7 @@ function getCapsLockModifierState(event) {
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
-        document.getElementById("logs").innerText += `\nCaps Lock State: ${getCapsLockModifierState(event)}`;
-        if (!isiPad) {
+        if (!isMobile) {
             capsState = getCapsLockModifierState(event);
             callCallbackIfNeeded();
         }
