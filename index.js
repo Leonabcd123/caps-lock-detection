@@ -21,6 +21,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (!isiPad) {
             capsState = getCapsLockModifierState(event);
+            document.getElementById("logs").innerText += `\nCaps Lock State: ${capsState}`;
             callCallbackIfNeeded();
         }
     });
