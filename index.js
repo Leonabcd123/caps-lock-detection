@@ -16,9 +16,8 @@ function callCallbackIfNeeded() {
     }
 }
 function getCapsLockModifierState(event) {
-    if ("getModifierState" in event) {
-        capsState = event.getModifierState("CapsLock");
-    }
+    console.log(event);
+    capsState = event.getModifierState("CapsLock");
 }
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
