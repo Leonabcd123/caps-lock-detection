@@ -42,6 +42,7 @@ document.addEventListener("keyup", (event) => {
     else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
         setCapsLockState(getCapsLockModifierState(event));
     }
+    console.warn(capsState);
 });
 document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
@@ -54,6 +55,8 @@ document.addEventListener("keydown", (event) => {
             setCapsLockState(!getCapsLockModifierState(event), true);
         }
     }
+
+    console.warn(capsState);
 });
 export function isCapsLockOn() {
     return capsState;
