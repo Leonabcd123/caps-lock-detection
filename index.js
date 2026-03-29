@@ -1,13 +1,16 @@
+var _a, _b;
 import { getCurrentOs } from "./os-detection.js";
+let previousCapsState = false;
 let capsState = false;
 export const os = getCurrentOs();
 let onCapsChangeCallback;
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
-const isiPad = os === "Mac" && navigator.maxTouchPoints > 1;
+const isMobile = (_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : navigator.maxTouchPoints > 1;
+const isiPad = os === "Mac" && isMobile;
 let isSendingCapsLockState = !isiPad;
-function setCapsLockState(newState, skipCallback) {
-    const callCallback = !skipCallback && capsState !== newState;
-    capsState = newState;
+function callCallbackIfNeeded() {
+    const callCallback = previousCapsState !== capsState;
+    previousCapsState = capsState;
     if (callCallback) {
         onCapsChangeCallback === null || onCapsChangeCallback === void 0 ? void 0 : onCapsChangeCallback(capsState);
     }
@@ -19,44 +22,47 @@ function getCapsLockModifierState(event) {
 mouseEventsToUpdateOn.forEach((eventType) => {
     document.addEventListener(eventType, (event) => {
         if (!isiPad) {
-            setCapsLockState(getCapsLockModifierState(event));
+            const currentCapsState = getCapsLockModifierState(event);
+            if (!isMobile || !currentCapsState) {
+                capsState = currentCapsState;
+                callCallbackIfNeeded();
+            }
         }
     });
 });
 document.addEventListener("keyup", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
-            setCapsLockState(false);
+            capsState = false;
         }
         else {
             const currentCapsState = getCapsLockModifierState(event);
             if (isSendingCapsLockState || currentCapsState) {
-                setCapsLockState(currentCapsState);
+                capsState = currentCapsState;
                 isSendingCapsLockState = true;
             }
         }
     }
     else if (os === "Windows") {
-        setCapsLockState(getCapsLockModifierState(event));
+        capsState = getCapsLockModifierState(event);
     }
     else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
-        setCapsLockState(getCapsLockModifierState(event));
+        capsState = getCapsLockModifierState(event);
     }
-    console.warn(capsState);
+    callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
-            setCapsLockState(true);
+            capsState = true;
+            callCallbackIfNeeded();
         }
     }
     else if (os === "Linux") {
         if (event.key === "CapsLock") {
-            setCapsLockState(!getCapsLockModifierState(event), true);
+            capsState = !getCapsLockModifierState(event);
         }
     }
-
-    console.warn(capsState);
 });
 export function isCapsLockOn() {
     return capsState;
