@@ -16,7 +16,7 @@
     }
 </style>
 <script type="module">
-    import { onCapsLockChange, os } from "./index.js";
+    import { onCapsLockChange, isCapsLockOn, os } from "./index.js";
 
     logs.innerText += `\nOS: ${os}`;
     logs.innerText += `\nUser Agent: ${navigator.userAgent}`;
@@ -29,20 +29,7 @@
     logs.innerText += `\nGPU: ${navigator.gpu}`;
     logs.innerText += `\nNothing17`;
     
-    onCapsLockChange((caps) => {
-        console.log("capslock is ", caps ? "on" : "off");
-        logs.innerText += `\ncapslock is ${caps ? "on" : "off"}`;
-
-        if (caps) {
-            document.getElementById('header').classList = ['capslock'];
-        } else {
-            document.getElementById('header').classList = [];
-        }
-    });
-
-    onCapsLockChange((caps) => {
-        console.log("Second listener");
-    });
+    console.log(isCapsLockOn());
 
 </script>
 
