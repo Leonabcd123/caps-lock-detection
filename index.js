@@ -2,12 +2,13 @@ var _a, _b;
 import { getCurrentOs } from "./os-detection.js";
 let previousCapsState = false;
 let capsState = false;
-export const os = getCurrentOs();
-let onCapsChangeCallbacks = [];
+const os = getCurrentOs();
+const onCapsChangeCallbacks = [];
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isMobile = (_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : navigator.maxTouchPoints > 1;
 const isiPad = os === "Mac" && isMobile;
 let isSendingCapsLockState = !isiPad;
+let isUsingTor = null;
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -43,10 +44,13 @@ document.addEventListener("keyup", (event) => {
             }
         }
     }
-    else if (os === "Windows") {
+    else if (os === "Windows" || isUsingTor) {
         capsState = getCapsLockModifierState(event);
     }
-    else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
+    else if (event.key === "CapsLock" && isUsingTor === null) {
+        isUsingTor || (isUsingTor = getCapsLockModifierState(event));
+    }
+    else if (event.key !== "Unidentified") {
         capsState = getCapsLockModifierState(event);
     }
     callCallbackIfNeeded();
@@ -58,15 +62,16 @@ document.addEventListener("keydown", (event) => {
             callCallbackIfNeeded();
         }
     }
-    else if (os === "Linux") {
+    else if (os === "Linux" && !isUsingTor) {
         if (event.key === "CapsLock") {
             capsState = !getCapsLockModifierState(event);
         }
     }
 });
-export function isCapsLockOn() {
+function isCapsLockOn() {
     return capsState;
 }
-export function onCapsLockChange(callback) {
+function onCapsLockChange(callback) {
     onCapsChangeCallbacks.push(callback);
 }
+export { isCapsLockOn, onCapsLockChange };
