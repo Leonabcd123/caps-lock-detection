@@ -2,7 +2,7 @@ var _a, _b;
 import { getCurrentOs } from "./os-detection.js";
 let previousCapsState = false;
 let capsState = false;
-const os = getCurrentOs();
+export const os = getCurrentOs();
 const onCapsChangeCallbacks = [];
 const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isMobile = (_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : navigator.maxTouchPoints > 1;
@@ -47,8 +47,10 @@ document.addEventListener("keyup", (event) => {
     else if (os === "Windows" || isUsingTor) {
         capsState = getCapsLockModifierState(event);
     }
-    else if (event.key === "CapsLock" && isUsingTor === null) {
-        isUsingTor || (isUsingTor = getCapsLockModifierState(event));
+    else if (event.key === "CapsLock") {
+        if (isUsingTor === null) {
+            isUsingTor = !getCapsLockModifierState(event);
+        }
     }
     else if (event.key !== "Unidentified") {
         capsState = getCapsLockModifierState(event);
