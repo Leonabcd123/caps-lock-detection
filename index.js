@@ -8,7 +8,7 @@ const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
 const isMobile = (_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : navigator.maxTouchPoints > 1;
 const isiPad = os === "Mac" && isMobile;
 let isSendingCapsLockState = !isiPad;
-let isUsingTor = null;
+const afterKeyup = new Map();
 function callCallbackIfNeeded() {
     const callCallback = previousCapsState !== capsState;
     previousCapsState = capsState;
@@ -32,7 +32,13 @@ mouseEventsToUpdateOn.forEach((eventType) => {
     });
 });
 document.addEventListener("keyup", (event) => {
-    console.log("KEYUP: ", event);
+    const setAfterKeyupValue = afterKeyup.get(event.code);
+    if (setAfterKeyupValue !== undefined) {
+        capsState = setAfterKeyupValue;
+        callCallbackIfNeeded();
+        afterKeyup.delete(event.code);
+        return;
+    }
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = false;
@@ -45,30 +51,24 @@ document.addEventListener("keyup", (event) => {
             }
         }
     }
-    else if (os === "Windows" || isUsingTor) {
+    else if (os === "Windows") {
         capsState = getCapsLockModifierState(event);
     }
-    else if (event.key === "CapsLock") {
-        if (isUsingTor === null) {
-            isUsingTor = !getCapsLockModifierState(event);
-        }
-    }
-    else if (event.key !== "Unidentified") {
+    else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
         capsState = getCapsLockModifierState(event);
     }
     callCallbackIfNeeded();
 });
 document.addEventListener("keydown", (event) => {
-    console.log("KEYDOWN: " + event);
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             capsState = true;
             callCallbackIfNeeded();
         }
     }
-    else if (os === "Linux" && !isUsingTor) {
+    else if (os === "Linux") {
         if (event.key === "CapsLock") {
-            capsState = !getCapsLockModifierState(event);
+            afterKeyup.set(event.code, !getCapsLockModifierState(event));
         }
     }
 });
