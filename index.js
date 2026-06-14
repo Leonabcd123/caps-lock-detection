@@ -34,6 +34,7 @@ mouseEventsToUpdateOn.forEach((eventType) => {
 document.addEventListener("keyup", (event) => {
     const setAfterKeyupValue = afterKeyup.get(event.code);
     if (setAfterKeyupValue !== undefined) {
+        console.log(event);
         capsState = setAfterKeyupValue;
         callCallbackIfNeeded();
         afterKeyup.delete(event.code);
