@@ -33,32 +33,33 @@ document.addEventListener("keyup", (event) => {
     if (setAfterKeyupValue !== undefined) {
         setCapsState(setAfterKeyupValue);
         afterKeyup.delete(event.code);
+        return;
     }
-    else {
-        if (os === "Mac") {
-            if (event.key === "CapsLock") {
-                setCapsState(false);
-            }
-            else {
-                const currentCapsState = getCapsLockModifierState(event);
-                if (isSendingCapsLockState || currentCapsState) {
-                    setCapsState(currentCapsState);
-                    isSendingCapsLockState = true;
-                }
-            }
+    if (os === "Mac") {
+        if (event.key === "CapsLock") {
+            setCapsState(false);
+            return;
         }
-        else if (os === "Windows") {
-            setCapsState(getCapsLockModifierState(event));
+        const currentCapsState = getCapsLockModifierState(event);
+        if (isSendingCapsLockState || currentCapsState) {
+            setCapsState(currentCapsState);
+            isSendingCapsLockState = true;
+            return;
         }
-        else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
-            setCapsState(getCapsLockModifierState(event));
-        }
+    }
+    if (os === "Windows") {
+        setCapsState(getCapsLockModifierState(event));
+        return;
+    }
+    if (event.key !== "CapsLock" && event.key !== "Unidentified") {
+        setCapsState(getCapsLockModifierState(event));
     }
 });
 document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             setCapsState(true);
+            return;
         }
     }
     else if (os === "Linux") {
