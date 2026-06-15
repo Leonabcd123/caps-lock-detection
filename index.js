@@ -44,14 +44,12 @@ document.addEventListener("keyup", (event) => {
         if (isSendingCapsLockState || currentCapsState) {
             setCapsState(currentCapsState);
             isSendingCapsLockState = true;
-            return;
         }
     }
-    if (os === "Windows") {
+    else if (os === "Windows") {
         setCapsState(getCapsLockModifierState(event));
-        return;
     }
-    if (event.key !== "CapsLock" && event.key !== "Unidentified") {
+    else if (event.key !== "CapsLock" && event.key !== "Unidentified") {
         setCapsState(getCapsLockModifierState(event));
     }
 });
@@ -59,7 +57,6 @@ document.addEventListener("keydown", (event) => {
     if (os === "Mac") {
         if (event.key === "CapsLock") {
             setCapsState(true);
-            return;
         }
     }
     else if (os === "Linux") {
