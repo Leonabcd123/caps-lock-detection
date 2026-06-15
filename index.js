@@ -68,7 +68,14 @@ document.addEventListener("keydown", (event) => {
     }
     else if (os === "Linux") {
         if (event.key === "CapsLock") {
-            afterKeyup.set(event.code, !getCapsLockModifierState(event));
+            const currentCapsState = !getCapsLockModifierState(event);
+            if (currentCapsState) {
+                capsState = true;
+                callCallbackIfNeeded();
+            }
+            else {
+                afterKeyup.set(event.code, currentCapsState);
+            }
         }
     }
 });
