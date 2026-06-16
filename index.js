@@ -51,7 +51,7 @@ document.addEventListener("keyup", (event) => {
     }
 });
 document.addEventListener("keydown", (event) => {
-    if (afterKeyup.get(event.code)) {
+    if (afterKeyup.get(event.code) !== undefined) {
         afterKeyup.delete(event.code);
     }
     if (os === "Windows") {
