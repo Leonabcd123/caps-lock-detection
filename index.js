@@ -51,6 +51,7 @@ document.addEventListener("keyup", (event) => {
     }
 });
 document.addEventListener("keydown", (event) => {
+    console.log(event);
     if (afterKeyup.get(event.code) !== undefined) {
         afterKeyup.delete(event.code);
     }
