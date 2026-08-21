@@ -30,6 +30,8 @@ if (os !== "Unknown") {
         });
     });
     document.addEventListener("keyup", (event) => {
+        if (!(event instanceof KeyboardEvent))
+            return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
             setCapsState(false);
             disableCapsOnCapsKeyup = false;
