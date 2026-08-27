@@ -30,6 +30,7 @@ if (os !== "Unknown") {
         }, { passive: true });
     });
     document.addEventListener("keyup", (event) => {
+        logs.innerText += `\nKeyup: ${event}`;
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
@@ -62,6 +63,7 @@ if (os !== "Unknown") {
         }
     });
     document.addEventListener("keydown", (event) => {
+        logs.innerText += `\nKeydown: ${event}`;
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
