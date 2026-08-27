@@ -30,7 +30,7 @@ if (os !== "Unknown") {
         }, { passive: true });
     });
     document.addEventListener("keyup", (event) => {
-        logs.innerText += `\nKeyup: ${event}`;
+        logs.innerText += "\nKeyup: " + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
@@ -63,7 +63,7 @@ if (os !== "Unknown") {
         }
     });
     document.addEventListener("keydown", (event) => {
-        logs.innerText += `\nKeydown: ${event}`;
+        logs.innerText += "\nKeydown: " + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
