@@ -3,7 +3,7 @@ import { getCurrentOs } from "./os-detection.js";
 const CAPS_LOCK = "CapsLock";
 const onCapsChangeCallbacks = [];
 let capsState = false;
-export const os = getCurrentOs();
+const os = getCurrentOs();
 if (os !== "Unknown") {
     const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
     const isMobile = (_b = (_a = navigator.userAgentData) === null || _a === void 0 ? void 0 : _a.mobile) !== null && _b !== void 0 ? _b : navigator.maxTouchPoints > 1;
@@ -30,7 +30,6 @@ if (os !== "Unknown") {
         }, { passive: true });
     });
     document.addEventListener("keyup", (event) => {
-        logs.innerText += "\nKeyup: " + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
@@ -63,7 +62,6 @@ if (os !== "Unknown") {
         }
     });
     document.addEventListener("keydown", (event) => {
-        logs.innerText += "\nKeydown: " + JSON.stringify({ e: event.type, key: event.key, capsLock: event.getModifierState("CapsLock") });
         if (!(event instanceof KeyboardEvent))
             return;
         if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
@@ -75,7 +73,7 @@ if (os !== "Unknown") {
                 break;
             case "Mac":
                 if (event.key === CAPS_LOCK) {
-                    setCapsState(true);
+                    setCapsState(getCapsLockModifierState(event));
                 }
                 break;
             case "Linux":
