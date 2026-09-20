@@ -6,8 +6,67 @@ export const { os, isMobile } = getPlatformInfo();
 if (os !== "Unknown") {
     const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
     const isiPad = os === "Mac" && isMobile;
-    let isSendingCapsLockState = !isiPad;
-    let disableCapsOnCapsKeyup = false;
+    const windowsHandler = (event) => {
+        return getCapsLockModifierState(event);
+    };
+    function createLinuxHandlers() {
+        let disableCapsOnCapsKeyup = false;
+        return {
+            onKeydown: (event) => {
+                if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
+                    disableCapsOnCapsKeyup = false;
+                }
+                if (event.key === CAPS_LOCK) {
+                    const flippedCapsState = !getCapsLockModifierState(event);
+                    if (flippedCapsState) {
+                        return true;
+                    }
+                    else {
+                        disableCapsOnCapsKeyup = true;
+                    }
+                }
+                return null;
+            },
+            onKeyup: (event) => {
+                if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
+                    disableCapsOnCapsKeyup = false;
+                    return false;
+                }
+                if (event.key !== CAPS_LOCK && event.key !== "Unidentified") {
+                    return getCapsLockModifierState(event);
+                }
+                return null;
+            },
+        };
+    }
+    function createMacHandlers() {
+        let isSendingCapsLockState = !isiPad;
+        return {
+            onKeydown: (event) => {
+                if (event.key === CAPS_LOCK) {
+                    return getCapsLockModifierState(event);
+                }
+                return null;
+            },
+            onKeyup: (event) => {
+                if (event.key === CAPS_LOCK) {
+                    return false;
+                }
+                const currentCapsState = getCapsLockModifierState(event);
+                if (isSendingCapsLockState || currentCapsState) {
+                    isSendingCapsLockState = true;
+                    return currentCapsState;
+                }
+                return null;
+            },
+        };
+    }
+    const platformHandlers = {
+        Windows: () => ({ onKeydown: windowsHandler, onKeyup: windowsHandler }),
+        Linux: createLinuxHandlers,
+        Mac: createMacHandlers,
+    };
+    const { onKeydown, onKeyup } = platformHandlers[os]();
     function setCapsState(newCapsState) {
         if (capsState !== newCapsState) {
             capsState = newCapsState;
@@ -27,66 +86,17 @@ if (os !== "Unknown") {
             }
         }, { passive: true });
     });
-    document.addEventListener("keyup", (event) => {
-        if (!(event instanceof KeyboardEvent))
-            return;
-        if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
-            setCapsState(false);
-            disableCapsOnCapsKeyup = false;
-            return;
-        }
-        switch (os) {
-            case "Windows":
-                setCapsState(getCapsLockModifierState(event));
-                break;
-            case "Mac":
-                if (event.key === CAPS_LOCK) {
-                    setCapsState(false);
-                    return;
-                }
-                {
-                    const currentCapsState = getCapsLockModifierState(event);
-                    if (isSendingCapsLockState || currentCapsState) {
-                        setCapsState(currentCapsState);
-                        isSendingCapsLockState = true;
-                    }
-                }
-                break;
-            case "Linux":
-                if (event.key !== CAPS_LOCK && event.key !== "Unidentified") {
-                    setCapsState(getCapsLockModifierState(event));
-                }
-                break;
-        }
-    });
-    document.addEventListener("keydown", (event) => {
-        if (!(event instanceof KeyboardEvent))
-            return;
-        if (event.key === CAPS_LOCK && disableCapsOnCapsKeyup) {
-            disableCapsOnCapsKeyup = false;
-        }
-        switch (os) {
-            case "Windows":
-                setCapsState(getCapsLockModifierState(event));
-                break;
-            case "Mac":
-                if (event.key === CAPS_LOCK) {
-                    setCapsState(getCapsLockModifierState(event));
-                }
-                break;
-            case "Linux":
-                if (event.key === CAPS_LOCK) {
-                    const flippedCapsState = !getCapsLockModifierState(event);
-                    if (flippedCapsState) {
-                        setCapsState(true);
-                    }
-                    else {
-                        disableCapsOnCapsKeyup = true;
-                    }
-                }
-                break;
-        }
-    });
+    function addKeyboardListener(type, handler) {
+        document.addEventListener(type, (event) => {
+            if (!(event instanceof KeyboardEvent))
+                return;
+            const newCapsState = handler(event);
+            if (newCapsState !== null)
+                setCapsState(newCapsState);
+        });
+    }
+    addKeyboardListener("keydown", onKeydown);
+    addKeyboardListener("keyup", onKeyup);
 }
 function isCapsLockOn() {
     return capsState;
