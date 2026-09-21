@@ -5,10 +5,18 @@ let capsState = false;
 export const { os, isMobile } = getPlatformInfo();
 if (os !== "Unknown") {
     const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
-    const isiPad = os === "Mac" && isMobile;
-    const windowsHandler = (event) => {
+    const windowsKeyboardHandler = (event) => {
         return getCapsLockModifierState(event);
     };
+    function createWindowsHandlers() {
+        return {
+            onKeydown: windowsKeyboardHandler,
+            onKeyup: windowsKeyboardHandler,
+            onMouse: (event) => {
+                return getCapsLockModifierState(event);
+            },
+        };
+    }
     function createLinuxHandlers() {
         let disableCapsOnCapsKeyup = false;
         return {
@@ -37,10 +45,17 @@ if (os !== "Unknown") {
                 }
                 return null;
             },
+            onMouse: (event) => {
+                const currentCapsState = getCapsLockModifierState(event);
+                if (!isMobile || !currentCapsState) {
+                    return currentCapsState;
+                }
+                return null;
+            },
         };
     }
     function createMacHandlers() {
-        let isSendingCapsLockState = !isiPad;
+        let isSendingCapsLockState = !isMobile;
         return {
             onKeydown: (event) => {
                 if (event.key === CAPS_LOCK) {
@@ -59,15 +74,22 @@ if (os !== "Unknown") {
                 }
                 return null;
             },
+            onMouse: isMobile
+                ? "skip"
+                : (event) => {
+                    return getCapsLockModifierState(event);
+                },
         };
     }
     const platformHandlers = {
-        Windows: () => ({ onKeydown: windowsHandler, onKeyup: windowsHandler }),
+        Windows: createWindowsHandlers,
         Linux: createLinuxHandlers,
         Mac: createMacHandlers,
     };
-    const { onKeydown, onKeyup } = platformHandlers[os]();
+    const { onKeydown, onKeyup, onMouse } = platformHandlers[os]();
     function setCapsState(newCapsState) {
+        if (newCapsState === null)
+            return;
         if (capsState !== newCapsState) {
             capsState = newCapsState;
             onCapsChangeCallbacks.forEach((callback) => callback(capsState));
@@ -76,23 +98,18 @@ if (os !== "Unknown") {
     function getCapsLockModifierState(event) {
         return event.getModifierState(CAPS_LOCK);
     }
-    mouseEventsToUpdateOn.forEach((eventType) => {
-        document.addEventListener(eventType, (event) => {
-            if (!isiPad) {
-                const currentCapsState = getCapsLockModifierState(event);
-                if (!isMobile || !currentCapsState) {
-                    setCapsState(currentCapsState);
-                }
-            }
-        }, { passive: true });
-    });
+    if (onMouse !== "skip") {
+        mouseEventsToUpdateOn.forEach((eventType) => {
+            document.addEventListener(eventType, (event) => {
+                setCapsState(onMouse(event));
+            }, { passive: true });
+        });
+    }
     function addKeyboardListener(type, handler) {
         document.addEventListener(type, (event) => {
             if (!(event instanceof KeyboardEvent))
                 return;
-            const newCapsState = handler(event);
-            if (newCapsState !== null)
-                setCapsState(newCapsState);
+            setCapsState(handler(event));
         });
     }
     addKeyboardListener("keydown", onKeydown);
