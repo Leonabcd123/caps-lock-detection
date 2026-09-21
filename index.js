@@ -4,17 +4,18 @@ const onCapsChangeCallbacks = [];
 let capsState = false;
 export const { os, isMobile } = getPlatformInfo();
 if (os !== "Unknown") {
+    function getCapsLockModifierState(event) {
+        return event.getModifierState(CAPS_LOCK);
+    }
     const mouseEventsToUpdateOn = ["mousedown", "mousemove", "wheel"];
-    const windowsKeyboardHandler = (event) => {
+    const windowsHandler = (event) => {
         return getCapsLockModifierState(event);
     };
     function createWindowsHandlers() {
         return {
-            onKeydown: windowsKeyboardHandler,
-            onKeyup: windowsKeyboardHandler,
-            onMouse: (event) => {
-                return getCapsLockModifierState(event);
-            },
+            onKeydown: windowsHandler,
+            onKeyup: windowsHandler,
+            onMouse: windowsHandler,
         };
     }
     function createLinuxHandlers() {
@@ -94,9 +95,6 @@ if (os !== "Unknown") {
             capsState = newCapsState;
             onCapsChangeCallbacks.forEach((callback) => callback(capsState));
         }
-    }
-    function getCapsLockModifierState(event) {
-        return event.getModifierState(CAPS_LOCK);
     }
     if (onMouse !== "skip") {
         mouseEventsToUpdateOn.forEach((eventType) => {
